@@ -1,5 +1,10 @@
 # ebay
 
+# Quick Notes
+- Before you Run the file, be sure to scroll all the way down and edit the description section of the ebay request payload. The one in the script is the one I use for my listings. Feel free to steal it, just change the store name to your own :). 
+- Feel free to open pull requests, Ill check them and approve if I like what I see!
+- If the item you want to list fails to list, copy the server response and send to me. I will fix it at my earliest convenience.
+
 # Google API keys
 - Firstly, create a spreadsheet. I called my spreadsheet Inventory, but you may call it whatever you want to. In this spreadsheet, name your first workbook whatever you want to. I called mine Inventory. Follow the format I used with the SKU in the 1st column, and the size in the second column. The third column must be present, however, you can put whatever field you want here. Having this column allows you to verify your inputs before the bot attempts to list them. Once satisfied with your sku + size inputs, type anything into the third column. In the fourth column, you will put a "Listed-Status". Do not touch this column. The bot uses this column to keep track of what has and has not been added. Below I have attached an image of what I did. Follow precisely for best results.
 - Next go to the following url: https://console.cloud.google.com/apis/credentials. Enable access to the sheets API here if that is not already enabled. This link provides some more information on how to do that: https://developers.google.com/workspace/guides/create-project. Follow precisely.
