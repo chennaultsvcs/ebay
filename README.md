@@ -11,6 +11,7 @@
 - Firstly, create an account at https://developer.ebay.com/ using your ebay.com username / password of your choosing.
 - Once your developer account is approved (24-48 hrs), go to https://developer.ebay.com/my/keys and create a production keyset. In this keyset you will find your AppID, CertID, and DevID. 
 - Next go to https://developer.ebay.com/my/auth?env=production&index=0, and retrieve an Auth'n'Auth key upon logging into your ebay account. This key serves as your AuthID.
+- Lastly go to https://www.bizpolicy.ebay.com/businesspolicy/manage. On this page, you should see the main business policies you use for payment, shipping, and returns. Firstly copy the policy names into the ebay-config.json file. Next for each of the three policies you should see a button that says "EDIT" in blue. Click this, and copy the number that comes after profileId in the URL. For each of the three policies, you need to retrieve the policy ID and copy this into the Config file.
 - With these keys, fill in ebay-config.json.
 
 # Spreadsheet format
