@@ -11,4 +11,8 @@
 - Firstly, create an account at https://developer.ebay.com/ using your ebay.com username / password of your choosing.
 - Once your developer account is approved (24-48 hrs), go to https://developer.ebay.com/my/keys and create a production keyset. In this keyset you will find your AppID, CertID, and DevID. 
 - Next go to https://developer.ebay.com/my/auth?env=production&index=0, and retrieve an Auth'n'Auth key upon logging into your ebay account. This key serves as your AuthID.
-- With these keys, fill in ebay-config.json. You are done setting the script up and are now ready to go ahead and launch it.
+- With these keys, fill in ebay-config.json.
+
+# Spreadsheet format
+- In the ebay-config.json file you need to specify the spreadsheetID and the range. For spreadsheet ID, go to the google sheets url and copy everything between the '/d/' and the '/edit'. For range use {workbookName}!A2:D1000. For example, because my workbook is named "inventory". My range is inventory!A2:D1000. Once these details are added to the config, you are ready to go.
+<img width="751" alt="Screen Shot 2021-04-26 at 10 19 49 PM" src="https://user-images.githubusercontent.com/61530695/116175014-87b98e00-a6dd-11eb-9b5b-83937866ea65.png">
