@@ -1,7 +1,7 @@
 # ebay
 
 # Quick Notes
-- Before you Run the file, be sure to scroll all the way down and edit the description section of the ebay request payload. The one in the script is the one I use for my listings. Feel free to steal it, just change the store name to your own :). 
+- Before you Run the file, be sure to scroll all the way down in ebay.py and edit the description section of the ebay request payload. The one in the script is the one I use for my listings. Feel free to steal it, just change the store name to your own :). 
 - Feel free to open pull requests, Ill check them and approve if I like what I see!
 - If the item you want to list fails to list, copy the server response and send to me. I will fix it at my earliest convenience.
 
