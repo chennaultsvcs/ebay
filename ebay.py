@@ -103,7 +103,7 @@ class getSpreadsheet():
                 for sku in uniqueSKUS:
                     t1 = threading.Thread(target = getStockx, args = [sku, uniqueSKUS[sku]])
                     t1.start()
-            time.sleep(60)
+            time.sleep(30)
 
 class getStockx():
     def __init__(self, sku, inventorySizes):
@@ -178,7 +178,7 @@ class getStockx():
                     for child in children:
                         sizeTitle = children[child]['shoeSize'].replace('Y', '').replace('W', '')
                         lowAsk = children[child]['market']['lowestAsk']
-                        ebayPrice = int(lowAsk*.9)
+                        ebayPrice = int(lowAsk*.95)
                         self.priceList[sizeTitle] = ebayPrice
             self.spawnListings()
         except:
