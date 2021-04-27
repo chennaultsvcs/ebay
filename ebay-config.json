@@ -4,5 +4,11 @@
 	"EbayAppID" : "",
 	"EbayDevID" : "",
 	"EbayCertID" : "",
-	"EbayAuthID" : ""
+	"EbayAuthID" : "",
+	"PaymentProfileName": "",
+	"PaymentProfileID": "",
+	"ReturnProfileName": "",
+	"ReturnProfileID": "",
+	"ShippingProfileName": "",
+	"ShippingProfileID": ""
 }
