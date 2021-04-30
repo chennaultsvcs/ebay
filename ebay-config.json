@@ -1,6 +1,6 @@
 {
 	"SpreadSheetID" : "",
-	"RangeName" : "",
+	"RangeName" : "{rangeTitle}!A1:Z1000",
 	"EbayAppID" : "",
 	"EbayDevID" : "",
 	"EbayCertID" : "",
