@@ -65,8 +65,10 @@ class getSpreadsheet():
         service = discovery.build('sheets', 'v4', credentials=credentials)
         spreadsheet_ID = spreadSheetID
         range_name = rangeName
+        printedValidations = False
         sheet = service.spreadsheets()
         while True == True:
+            layout = {}
             minNew = None
             countNew = 0
             uniqueSKUS = {}
@@ -76,22 +78,61 @@ class getSpreadsheet():
                 timestamp.timeStamp('Spreadsheet Not Found', "../ebay.py/~getSpreadsheet")
             else:
                 for index, row in enumerate(values):
-                    if len(row) == 3:
-                        timestamp.timeStamp('Listing Product %s, %s' % (row[0], row[1]), "../ebay.py/~getSpreadsheet")
-                        if row[0].lower() not in uniqueSKUS:
-                            uniqueSKUS[row[0].lower()] = [row[1]]
+                    if index == 0:
+                        if printedValidations == False:
+                            for index, elem in enumerate(row):
+                                if 'quantity' in elem.lower():
+                                    quantityRow = index
+                                    timestamp.timeStamp(f'Parsed Quantity Arg {quantityRow}', '../ebay.py/~getSpreadsheet')
+                                    layout['Quantity Row'] = quantityRow
+                                if 'floor' in elem.lower():
+                                    floorPriceRow = index
+                                    timestamp.timeStamp(f'Parsed Floor Price Arg {floorPriceRow}', '../ebay.py/~getSpreadsheet')
+                                    layout['Price Floor'] = floorPriceRow
+                                if 'sku' in elem.lower():
+                                    skuRow = index
+                                    timestamp.timeStamp(f'Parsed SKU Arg {skuRow}', '../ebay.py/~getSpreadsheet')
+                                    layout['Sku'] = skuRow
+                                if 'size' in elem.lower():
+                                    sizeRow = index
+                                    timestamp.timeStamp(f'Parsed Size Arg {sizeRow}', '../ebay.py/~getSpreadsheet')
+                                    layout['Size'] = sizeRow
+                                if 'listed' in elem.lower():
+                                    listedStatusRow = index
+                                    timestamp.timeStamp(f'Parsed Listed Status Arg {listedStatusRow}', '../ebay.py/~getSpreadsheet')
+                                    layout['Listed Status'] = listedStatusRow
+                            printedValidations = True
+                    layoutMax = len(layout)
+                    if len(row) == layoutMax-1:
+                        timestamp.timeStamp('Listing Product %s, %s' % (row[layout['Sku']], row[layout['Size']]), "../ebay.py/~getSpreadsheet")
+                        if row[layout['Sku']].lower() not in uniqueSKUS:
+                            uniqueSKUS[row[layout['Sku']].lower()] = {}
+                            try:
+                                uniqueSKUS[row[layout['Sku']].lower()][row[layout['Size']]] = int(row[layout['Quantity Row']])
+                            except:
+                                uniqueSKUS[row[layout['Sku']].lower()][row[layout['Size']]] = 1
                         else:
-                            uniqueSKUS[row[0].lower()].append(row[1])
+                            if row[layout['Size']] in uniqueSKUS[row[layout['Sku']].lower()]:
+                                try:
+                                    uniqueSKUS[row[layout['Sku']].lower()][row[layout['Size']]] += int(row[layout['Quantity Row']])
+                                except:
+                                    uniqueSKUS[row[layout['Sku']].lower()][row[layout['Size']]] += 1
+                            else:
+                                try:
+                                    uniqueSKUS[row[layout['Sku']].lower()][row[layout['Size']]] = int(row[layout['Quantity Row']])
+                                except:
+                                    uniqueSKUS[row[layout['Sku']].lower()][row[layout['Size']]] = 1
                         if minNew == None:
-                            minNew = index+2 
+                            minNew = index+1 
                         else:
                             pass
                         countNew += 1
                     else:
                         pass
+            columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L']
             if minNew != None:
                 values = []
-                update_range = f'{range_name.split("!")[0]}!D{str(minNew)}:D1000'
+                update_range = f'{range_name.split("!")[0]}!{columns[layout["Listed Status"]]}{str(minNew)}:{columns[layout["Listed Status"]]}1000'
                 for i in range(countNew):
                     values.append(['TRUE'])
                 data = {
@@ -108,7 +149,10 @@ class getSpreadsheet():
 class getStockx():
     def __init__(self, sku, inventorySizes):
         self.sku = sku
-        self.inventorySizes = inventorySizes 
+        self.sizingData = inventorySizes
+        self.inventorySizes = []
+        for size in self.sizingData:
+            self.inventorySizes.append(size)
         global appID
         global devID
         global certID
@@ -184,10 +228,9 @@ class getStockx():
         except:
             timestamp.timeStamp(f'Unable to parse all needed elements error', '../ebay.py/~getStockx~getProdPage')
             
-
     def spawnListings(self):
         for size in self.inventorySizes:
-            data = {'Size' : size, 'ListingPrice' : self.priceList[size], 'imageURL' : self.image, 'prodTitle' : self.prodTitle, 'sku' : self.sku}
+            data = {'Size' : size, 'ListingPrice' : self.priceList[size], 'imageURL' : self.image, 'prodTitle' : self.prodTitle, 'sku' : self.sku, 'quantity' : self.sizingData[size]}
             t1 = threading.Thread(target=listing, args = [data, appID, devID, certID, authID])
             t1.start()
 
@@ -204,6 +247,7 @@ class listing():
         self.ListingImage = stockxData['imageURL']
         self.ListingProdTitle = stockxData['prodTitle']
         self.ListingSKU = stockxData['sku']
+        self.listingQuantity = int(stockxData['quantity'])
         if self.ListingProdTitle.split(' ')[0] == 'New' and self.ListingProdTitle.split(' ')[1] == 'Balance':
             self.brand = 'New Balance'
         elif self.ListingProdTitle.split(' ')[0] == 'Air' and self.ListingProdTitle.split(' ')[1] == 'Jordan':
@@ -302,7 +346,7 @@ class listing():
                 'PictureDetails':{
                     'PictureURL':self.ListingImage,
                 },
-                'Quantity':1,
+                'Quantity':self.listingQuantity,
                 'SellerProfiles':{
                     'SellerPaymentProfile':{
                         'PaymentProfileName' : PaymentProfileName,
