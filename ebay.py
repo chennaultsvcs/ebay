@@ -108,18 +108,18 @@ class getSpreadsheet():
                         if row[layout['Sku']].lower() not in uniqueSKUS:
                             uniqueSKUS[row[layout['Sku']].lower()] = {}
                             try:
-                                uniqueSKUS[row[layout['Sku']].lower()][row[layout['Size']]] = int(row[layout['Quantity Row']])
+                                uniqueSKUS[row[layout['Sku']].lower()][row[layout['Size']]] = {"Quantity" : int(row[layout['Quantity Row']]), "FloorPrice" : int(row[layout['Price Floor']])}
                             except:
                                 uniqueSKUS[row[layout['Sku']].lower()][row[layout['Size']]] = 1
                         else:
                             if row[layout['Size']] in uniqueSKUS[row[layout['Sku']].lower()]:
                                 try:
-                                    uniqueSKUS[row[layout['Sku']].lower()][row[layout['Size']]] += int(row[layout['Quantity Row']])
+                                    uniqueSKUS[row[layout['Sku']].lower()][row[layout['Size']]]['Quantity'] += int(row[layout['Quantity Row']])
                                 except:
                                     uniqueSKUS[row[layout['Sku']].lower()][row[layout['Size']]] += 1
                             else:
                                 try:
-                                    uniqueSKUS[row[layout['Sku']].lower()][row[layout['Size']]] = int(row[layout['Quantity Row']])
+                                    uniqueSKUS[row[layout['Sku']].lower()][row[layout['Size']]] = {"Quantity" : int(row[layout['Quantity Row']]), "FloorPrice" : int(row[layout['Price Floor']])}
                                 except:
                                     uniqueSKUS[row[layout['Sku']].lower()][row[layout['Size']]] = 1
                         if minNew == None:
@@ -223,7 +223,7 @@ class getStockx():
                         sizeTitle = children[child]['shoeSize'].replace('Y', '').replace('W', '')
                         lowAsk = children[child]['market']['lowestAsk']
                         if lowAsk == None:
-                            lowAsk = 1000
+                            lowAsk = 0
                         ebayPrice = int(lowAsk*.95)
                         self.priceList[sizeTitle] = ebayPrice
             self.spawnListings()
@@ -232,7 +232,11 @@ class getStockx():
             
     def spawnListings(self):
         for size in self.inventorySizes:
-            data = {'Size' : size, 'ListingPrice' : self.priceList[size], 'imageURL' : self.image, 'prodTitle' : self.prodTitle, 'sku' : self.sku, 'quantity' : self.sizingData[size]}
+            if self.priceList[size] < self.sizingData[size]['FloorPrice']:
+                listingPrice = self.sizingData[size]['FloorPrice']
+            else:
+                listingPrice = self.priceList[size]
+            data = {'Size' : size, 'ListingPrice' : listingPrice, 'imageURL' : self.image, 'prodTitle' : self.prodTitle, 'sku' : self.sku, 'quantity' : self.sizingData[size]['Quantity']}
             t1 = threading.Thread(target=listing, args = [data, appID, devID, certID, authID])
             t1.start()
 
