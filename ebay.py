@@ -67,8 +67,8 @@ class getSpreadsheet():
         range_name = rangeName
         printedValidations = False
         sheet = service.spreadsheets()
+        layout = {}
         while True == True:
-            layout = {}
             minNew = None
             countNew = 0
             uniqueSKUS = {}
@@ -222,6 +222,8 @@ class getStockx():
                     for child in children:
                         sizeTitle = children[child]['shoeSize'].replace('Y', '').replace('W', '')
                         lowAsk = children[child]['market']['lowestAsk']
+                        if lowAsk == None:
+                            lowAsk = 1000
                         ebayPrice = int(lowAsk*.95)
                         self.priceList[sizeTitle] = ebayPrice
             self.spawnListings()
