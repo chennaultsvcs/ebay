@@ -3,6 +3,7 @@
 # Latest Changes!
 - Support for "Floor Price" added: If your spreadsheet includes a "Floor Price:" column, you can now set a minimum price by sku/size for listings!
 - Fixed critical bugs
+- Code is out of beta! Repository is now publicly available to be shared with friends / family / random strangers on the internet :)
 
 # Quick Notes
 - Before you Run the file, be sure to scroll all the way down in ebay.py and edit the description section of the ebay request payload. The one in the script is the one I use for my listings. Feel free to steal it, just change the store name to your own :). 
