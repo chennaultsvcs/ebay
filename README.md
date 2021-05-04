@@ -26,4 +26,6 @@
 
 # Spreadsheet format
 - In the ebay-config.json file you need to specify the spreadsheetID and the range. For spreadsheet ID, go to the google sheets url and copy everything between the '/d/' and the '/edit'. For range use {workbookName}!A2:D1000. For example, because my workbook is named "inventory". My range is inventory!A2:D1000. Once these details are added to the config, you are ready to go.
-<img width="751" alt="Screen Shot 2021-04-26 at 10 19 49 PM" src="https://user-images.githubusercontent.com/61530695/116175014-87b98e00-a6dd-11eb-9b5b-83937866ea65.png">
+- PLEASE FOLLOW THIS FORMAT PRECISELY FOR BEST RESULTS!!!
+<img width="468" alt="Screen Shot 2021-05-03 at 11 54 26 PM" src="https://user-images.githubusercontent.com/61530695/116959215-f1501400-ac6a-11eb-961b-96e7a58649ea.png">
+
